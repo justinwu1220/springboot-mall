@@ -1,7 +1,8 @@
-package com.justinwu.springbootmall.service;
+package com.justinwu.springbootmall.dao;
 
 import com.justinwu.springbootmall.model.Product;
 
-public interface ProductService {
+public interface ProductDao {
+
     Product getProductById(Integer productId);
 }
