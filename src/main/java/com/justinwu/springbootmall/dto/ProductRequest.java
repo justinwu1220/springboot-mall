@@ -3,6 +3,7 @@ package com.justinwu.springbootmall.dto;
 import com.justinwu.springbootmall.constant.ProductCategory;
 import jakarta.validation.constraints.NotNull;
 
+//將前端傳來的request body 提取出變數值
 public class ProductRequest {
     @NotNull
     private String productName;

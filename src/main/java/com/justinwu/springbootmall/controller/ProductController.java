@@ -9,11 +9,22 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class ProductController {
 
     @Autowired
     private ProductService productService;
+
+    @GetMapping("/products")//查詢商品列表
+    public  ResponseEntity<List<Product>> getProducts(){
+        List<Product> productList = productService.getProducts();
+
+        //查詢 列表 時無論結果有無數據，都需回傳200 OK(RESTful 設計理念)
+        return ResponseEntity.status(HttpStatus.OK).body(productList);
+    }
+
     @GetMapping("/products/{productId}")//透過productId查詢商品
     public ResponseEntity<Product> getProduct(@PathVariable Integer productId){
         //透過productId查詢商品
