@@ -1,5 +1,6 @@
 package com.justinwu.springbootmall.controller;
 
+import com.justinwu.springbootmall.constant.ProductCategory;
 import com.justinwu.springbootmall.dto.ProductRequest;
 import com.justinwu.springbootmall.model.Product;
 import com.justinwu.springbootmall.service.ProductService;
@@ -18,8 +19,11 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/products")//查詢商品列表
-    public  ResponseEntity<List<Product>> getProducts(){
-        List<Product> productList = productService.getProducts();
+    public  ResponseEntity<List<Product>> getProducts(
+            @RequestParam(required = false) ProductCategory category,
+            @RequestParam(required = false) String search
+            ){
+        List<Product> productList = productService.getProducts(category, search);
 
         //查詢 列表 時無論結果有無數據，都需回傳200 OK(RESTful 設計理念)
         return ResponseEntity.status(HttpStatus.OK).body(productList);
