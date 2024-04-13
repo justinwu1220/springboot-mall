@@ -21,12 +21,20 @@ public class ProductController {
 
     @GetMapping("/products")//查詢商品列表
     public  ResponseEntity<List<Product>> getProducts(
+            //查詢條件 Filtering
             @RequestParam(required = false) ProductCategory category,
-            @RequestParam(required = false) String search
+            @RequestParam(required = false) String search,
+
+            //排序 Sorting
+            @RequestParam(defaultValue = "created_date") String orderBy,
+            @RequestParam(defaultValue = "desc") String sort
     ){
         ProductQueryParams productQueryParams = new ProductQueryParams();
         productQueryParams.setCategory(category);
         productQueryParams.setSearch(search);
+        productQueryParams.setOrderBy(orderBy);
+        productQueryParams.setSort(sort);
+
         List<Product> productList = productService.getProducts(productQueryParams);
 
         //查詢 列表 時無論結果有無數據，都需回傳200 OK(RESTful 設計理念)
