@@ -5,6 +5,7 @@ import com.justinwu.springbootmall.dto.ProductQueryParams;
 import com.justinwu.springbootmall.dto.ProductRequest;
 import com.justinwu.springbootmall.model.Product;
 import com.justinwu.springbootmall.service.ProductService;
+import com.justinwu.springbootmall.util.Page;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -24,7 +25,7 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/products")//查詢商品列表
-    public  ResponseEntity<List<Product>> getProducts(
+    public  ResponseEntity<Page<Product>> getProducts(
             //查詢條件 Filtering
             @RequestParam(required = false) ProductCategory category,
             @RequestParam(required = false) String search,
@@ -45,10 +46,20 @@ public class ProductController {
         productQueryParams.setLimit(limit);
         productQueryParams.setOffset(offset);
 
+        //查詢條件取得的商品總數(不受limit、offset 影響)
+        Integer total = productService.countProduct(productQueryParams);
+
+        //分頁取得的商品列表(受到limit、offset 影響)
         List<Product> productList = productService.getProducts(productQueryParams);
 
+        Page<Product> page = new Page<>();
+        page.setLimit(limit);
+        page.setOffset(offset);
+        page.setTotal(total);
+        page.setResult(productList);
+
         //查詢 列表 時無論結果有無數據，都需回傳200 OK(RESTful 設計理念)
-        return ResponseEntity.status(HttpStatus.OK).body(productList);
+        return ResponseEntity.status(HttpStatus.OK).body(page);
     }
 
     @GetMapping("/products/{productId}")//透過productId查詢商品

@@ -22,21 +22,23 @@ public class ProductDaoImpl implements ProductDao {
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Override
+    public Integer countProduct(ProductQueryParams productQueryParams) {
+        String sql = "SELECT count(*) From product WHERE 1=1";
+        Map<String, Object> map = new HashMap<>();
+        sql = addFilteringSql(sql, map, productQueryParams);
+        Integer total = namedParameterJdbcTemplate.queryForObject(sql, map, Integer.class);
+        return total;
+    }
+
+    @Override
     public List<Product> getProducts(ProductQueryParams productQueryParams) {
         String sql = "SELECT product_id, product_name, category, image_url, price," +
                 " stock, description, created_date, last_modified_date" +
-                " From product WHERE 1=1";  //用where 1=1 不會影響原sql結果，也可以讓其他查詢條件sql方便拼接在後面
+                " FROM product WHERE 1=1";  //用where 1=1 不會影響原sql結果，也可以讓其他查詢條件sql方便拼接在後面
 
         Map<String, Object> map = new HashMap<>();
         //查詢條件
-        if(productQueryParams.getCategory() != null){
-            sql = sql + " AND category = :category";
-            map.put("category", productQueryParams.getCategory().toString());
-        }
-        if(productQueryParams.getSearch() != null){
-            sql = sql + " AND product_name LIKE :search";
-            map.put("search", "%" + productQueryParams.getSearch() + "%");
-        }
+        sql = addFilteringSql(sql, map, productQueryParams);
         //排序
         sql = sql + " ORDER BY " + productQueryParams.getOrderBy() + " " + productQueryParams.getSort();
         //分頁
@@ -52,7 +54,7 @@ public class ProductDaoImpl implements ProductDao {
     public Product getProductById(Integer productId) {
         String sql = "SELECT product_id, product_name, category, image_url, price," +
                 " stock, description, created_date, last_modified_date" +
-                " From product WHERE product_id = :productId";
+                " FROM product WHERE product_id = :productId";
 
         Map<String, Object> map = new HashMap<>();
         map.put("productId", productId);
@@ -122,5 +124,19 @@ public class ProductDaoImpl implements ProductDao {
         map.put("productId", productId);
 
         namedParameterJdbcTemplate.update(sql, map);
+    }
+
+    //查詢條件sql拼接
+    private String addFilteringSql(String sql, Map<String, Object> map, ProductQueryParams productQueryParams){
+        if(productQueryParams.getCategory() != null){
+            sql = sql + " AND category = :category";
+            map.put("category", productQueryParams.getCategory().toString());
+        }
+        if(productQueryParams.getSearch() != null){
+            sql = sql + " AND product_name LIKE :search";
+            map.put("search", "%" + productQueryParams.getSearch() + "%");
+        }
+
+        return sql;
     }
 }
