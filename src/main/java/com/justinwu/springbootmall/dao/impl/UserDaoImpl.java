@@ -55,7 +55,7 @@ public class UserDaoImpl implements UserDao {
         map.put("userId", userId);
         //namedParameterJdbcTemplate.query會返回list
         List<User> userList = namedParameterJdbcTemplate.query(sql, map, new UserRowMapper());
-        //productList若為空，則返回null
+        //userList若為空，則返回null
         if(userList.size()>0) {
             return userList.get(0);
         }
@@ -73,7 +73,7 @@ public class UserDaoImpl implements UserDao {
         map.put("email", email);
         //namedParameterJdbcTemplate.query會返回list
         List<User> userList = namedParameterJdbcTemplate.query(sql, map, new UserRowMapper());
-        //productList若為空，則返回null
+        //userList若為空，則返回null
         if(userList.size()>0) {
             return userList.get(0);
         }
