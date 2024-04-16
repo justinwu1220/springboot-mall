@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin("http://127.0.0.1:5175/")
 @Validated
 @RestController
 public class ProductController {
@@ -35,7 +36,7 @@ public class ProductController {
             @RequestParam(defaultValue = "desc") String sort,
 
             //分頁 Pagination
-            @RequestParam(defaultValue = "5") @Max(1000) @Min(0) Integer limit,
+            @RequestParam(defaultValue = "1000") @Max(1000) @Min(0) Integer limit,
             @RequestParam(defaultValue = "0") @Min(0) Integer offset
     ){
         ProductQueryParams productQueryParams = new ProductQueryParams();

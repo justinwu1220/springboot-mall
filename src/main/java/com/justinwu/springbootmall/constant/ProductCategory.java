@@ -1,7 +1,7 @@
 package com.justinwu.springbootmall.constant;
 
 public enum ProductCategory {
-    FOOD,
-    CAR,
-    E_BOOK
+    KIRBY,
+    GUNDAM,
+    POKEMON
 }
