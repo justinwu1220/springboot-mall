@@ -3,12 +3,14 @@ package com.justinwu.springbootmall.model;
 import com.justinwu.springbootmall.constant.ProductCategory;
 
 import java.util.Date;
+import java.util.List;
 
 public class Product {
     private Integer productId;
     private String productName;
     private ProductCategory category;
     private String imageUrl;
+    private List<String> otherImagesUrl;
     private Integer price;
     private Integer stock;
     private String description;
@@ -45,6 +47,14 @@ public class Product {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public List<String> getOtherImagesUrl() {
+        return otherImagesUrl;
+    }
+
+    public void setOtherImagesUrl(List<String> otherImagesUrl) {
+        this.otherImagesUrl = otherImagesUrl;
     }
 
     public Integer getPrice() {

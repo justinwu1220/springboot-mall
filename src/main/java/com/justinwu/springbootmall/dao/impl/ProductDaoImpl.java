@@ -4,6 +4,8 @@ import com.justinwu.springbootmall.dao.ProductDao;
 import com.justinwu.springbootmall.dto.ProductQueryParams;
 import com.justinwu.springbootmall.dto.ProductRequest;
 import com.justinwu.springbootmall.model.Product;
+import com.justinwu.springbootmall.model.ProductOtherImage;
+import com.justinwu.springbootmall.rowmapper.ProductOtherImagesRowMapper;
 import com.justinwu.springbootmall.rowmapper.ProductRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -70,6 +72,16 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
+    public List<ProductOtherImage> getProductOtherImagesById(Integer productId) {
+        String sql = "SELECT product_id, image_url FROM product_other_images WHERE product_id = :productId";
+        Map<String, Object> map = new HashMap<>();
+        map.put("productId", productId);
+        //namedParameterJdbcTemplate.query會返回list
+        List<ProductOtherImage> imageList = namedParameterJdbcTemplate.query(sql, map, new ProductOtherImagesRowMapper());
+        return imageList;
+    }
+
+    @Override
     public Integer createProduct(ProductRequest productRequest) {
         String sql = "INSERT INTO product(product_name, category, image_url, price," +
                 " stock, description, created_date, last_modified_date)" +
@@ -95,6 +107,25 @@ public class ProductDaoImpl implements ProductDao {
         int productId = keyHolder.getKey().intValue();
 
         return productId;
+    }
+
+    @Override
+    public void createProductOtherImages(Integer productId, List<String> otherImagesUrlList) {
+        //使用batchUpdate加入數據
+        String sql = "INSERT INTO product_other_images(product_id, image_url)" +
+                " VALUES (:productId, :imageUrl)";
+
+        MapSqlParameterSource[] parameterSources = new MapSqlParameterSource[otherImagesUrlList.size()];
+
+        for (int i = 0; i < otherImagesUrlList.size(); i++){
+            String imageUrl = otherImagesUrlList.get(i);
+
+            parameterSources[i] = new MapSqlParameterSource();
+            parameterSources[i].addValue("productId", productId);
+            parameterSources[i].addValue("imageUrl", imageUrl);
+        }
+
+        namedParameterJdbcTemplate.batchUpdate(sql, parameterSources);
     }
 
     @Override
@@ -132,6 +163,16 @@ public class ProductDaoImpl implements ProductDao {
     @Override
     public void deleteProductById(Integer productId) {
         String sql = "DELETE FROM product WHERE product_id = :productId";
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("productId", productId);
+
+        namedParameterJdbcTemplate.update(sql, map);
+    }
+
+    @Override
+    public void deleteProductOtherImagesById(Integer productId) {
+        String sql = "DELETE FROM product_other_images WHERE product_id = :productId";
 
         Map<String, Object> map = new HashMap<>();
         map.put("productId", productId);

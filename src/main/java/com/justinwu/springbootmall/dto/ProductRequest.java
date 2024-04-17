@@ -3,6 +3,8 @@ package com.justinwu.springbootmall.dto;
 import com.justinwu.springbootmall.constant.ProductCategory;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.List;
+
 //將前端傳來的request body 提取出變數值
 public class ProductRequest {
     @NotNull
@@ -11,6 +13,7 @@ public class ProductRequest {
     private ProductCategory category;
     @NotNull
     private String imageUrl;
+    private List<String> otherImagesUrl;
     @NotNull
     private Integer price;
     @NotNull
@@ -31,6 +34,14 @@ public class ProductRequest {
 
     public void setCategory(ProductCategory category) {
         this.category = category;
+    }
+
+    public List<String> getOtherImagesUrl() {
+        return otherImagesUrl;
+    }
+
+    public void setOtherImagesUrl(List<String> otherImagesUrl) {
+        this.otherImagesUrl = otherImagesUrl;
     }
 
     public String getImageUrl() {
