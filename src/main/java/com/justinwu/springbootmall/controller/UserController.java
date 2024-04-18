@@ -4,14 +4,12 @@ import com.justinwu.springbootmall.dto.UserLoginRequest;
 import com.justinwu.springbootmall.dto.UserRegisterRequest;
 import com.justinwu.springbootmall.model.User;
 import com.justinwu.springbootmall.service.UserService;
+import com.justinwu.springbootmall.util.JwtUtil;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
 @RestController

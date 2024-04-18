@@ -12,6 +12,7 @@ public class User {
     private String password;
     private Date createdDate;
     private Date lastModifiedDate;
+    private String token;
 
     public Integer getUserId() {
         return userId;
@@ -51,5 +52,13 @@ public class User {
 
     public void setLastModifiedDate(Date lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

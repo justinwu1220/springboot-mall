@@ -5,6 +5,7 @@ import com.justinwu.springbootmall.dto.UserLoginRequest;
 import com.justinwu.springbootmall.dto.UserRegisterRequest;
 import com.justinwu.springbootmall.model.User;
 import com.justinwu.springbootmall.service.UserService;
+import com.justinwu.springbootmall.util.JwtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,8 @@ public class UserServiceImpl implements UserService {
 
         //比對密碼
         if(user.getPassword().equals(hashedPassword)){
+            String token = JwtUtil.createJwtToken(user);
+            user.setToken(token);
             return user;
         }else{
             log.warn("email {} 的密碼錯誤", userLoginRequest.getEmail());
