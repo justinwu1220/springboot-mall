@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin("http://127.0.0.1:5175/")
+@CrossOrigin
 @Validated
 @RestController
 public class ProductController {
