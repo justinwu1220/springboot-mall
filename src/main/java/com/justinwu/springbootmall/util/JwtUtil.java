@@ -36,7 +36,6 @@ public class JwtUtil {
         }
         try {
             Jws<Claims> claimsJws = Jwts.parser().setSigningKey(sign).parseClaimsJws(token);
-            System.out.println(claimsJws);
         } catch (Exception e){
             e.printStackTrace();
             return false;
