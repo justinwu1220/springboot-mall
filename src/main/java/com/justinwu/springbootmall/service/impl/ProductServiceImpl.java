@@ -44,6 +44,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Integer createProduct(ProductRequest productRequest) {
+        //取得接口傳過來的productOtherImages
         List<String> otherImagesUrlList = productRequest.getOtherImagesUrl();
         //新增商品
         Integer productId = productDao.createProduct(productRequest);
