@@ -5,7 +5,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 @Component
@@ -19,10 +21,8 @@ public class TokenInterceptor implements HandlerInterceptor {
         String token = request.getHeader("token");
 
         if( !JwtUtil.checkJwtToken(token)){ //token驗證失敗
-            System.out.println("token not find");
-            return false;
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "token驗證失敗");
         }
-        System.out.println("token find");
         return  true;
     }
 }
