@@ -10,12 +10,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class InceptorConfig implements WebMvcConfigurer {
 
     @Autowired
-    private LoginInterceptor tokenInterceptor;
+    private LoginInterceptor loginInterceptor;
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(tokenInterceptor)
+        registry.addInterceptor(loginInterceptor)
                 .addPathPatterns("/**");
-                //.excludePathPatterns("/users/login", "/users/register", "/products/**", "/users/{userId}/**");
-                //.excludePathPatterns("/**");
     }
 }
