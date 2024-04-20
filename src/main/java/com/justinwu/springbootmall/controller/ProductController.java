@@ -5,6 +5,8 @@ import com.justinwu.springbootmall.dto.ProductQueryParams;
 import com.justinwu.springbootmall.dto.ProductRequest;
 import com.justinwu.springbootmall.model.Product;
 import com.justinwu.springbootmall.service.ProductService;
+import com.justinwu.springbootmall.tool.PassToken;
+import com.justinwu.springbootmall.tool.UserLoginToken;
 import com.justinwu.springbootmall.util.Page;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
@@ -24,6 +26,7 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    @PassToken//不需登入權限
     @GetMapping("/products")//查詢商品列表
     public  ResponseEntity<Page<Product>> getProducts(
             //查詢條件 Filtering
@@ -62,6 +65,7 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(page);
     }
 
+    @PassToken//不需登入權限
     @GetMapping("/products/{productId}")//透過productId查詢商品
     public ResponseEntity<Product> getProduct(@PathVariable Integer productId){
         //透過productId查詢商品
@@ -75,6 +79,7 @@ public class ProductController {
         }
     }
 
+    @UserLoginToken//需要登入權限
     @PostMapping("/products")//建立商品
     public ResponseEntity<Product> createProduct(@RequestBody @Valid ProductRequest productRequest){
         //建立商品後返回自動增加的productId
@@ -84,6 +89,7 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED).body(product);
     }
 
+    @UserLoginToken//需要登入權限
     @PutMapping("/products/{productId}")//更新商品
     public ResponseEntity<Product> updateProduct(@PathVariable Integer productId,
                                                  @RequestBody @Valid ProductRequest productRequest){
@@ -99,6 +105,7 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(updatedProduct);
     }
 
+    @UserLoginToken//需要登入權限
     @DeleteMapping("/products/{productId}")//刪除商品
     public ResponseEntity<?> deleteProduct(@PathVariable Integer productId){
         //不檢查商品是否存在，因為無論商品原本是否存在，最後結果都要是不存在

@@ -4,6 +4,7 @@ import com.justinwu.springbootmall.dto.UserLoginRequest;
 import com.justinwu.springbootmall.dto.UserRegisterRequest;
 import com.justinwu.springbootmall.model.User;
 import com.justinwu.springbootmall.service.UserService;
+import com.justinwu.springbootmall.tool.PassToken;
 import com.justinwu.springbootmall.util.JwtUtil;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @PassToken//不需登入權限
     @PostMapping("/users/register")
     public ResponseEntity<User> register(@RequestBody @Valid UserRegisterRequest userRegisterRequest){
         Integer userId = userService.register(userRegisterRequest);
@@ -26,6 +28,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
+    @PassToken//不需登入權限
     @PostMapping("/users/login")
     public ResponseEntity<User> login(@RequestBody @Valid UserLoginRequest userLoginRequest){
         User user = userService.login(userLoginRequest);

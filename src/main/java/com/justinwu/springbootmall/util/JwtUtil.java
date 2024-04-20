@@ -6,8 +6,8 @@ import io.jsonwebtoken.*;
 import java.util.Date;
 
 public class JwtUtil {
-    //private static long time = 1000 * 60 * 60 * 1; //1小時
-    private static long time = 1000 * 60;
+    private static long time = 1000 * 60 * 60 * 1; //1小時
+    //private static long time = 1000 * 60;
     private static String sign = "JWTTokenSignatureForSpringBootMallProjectCreatedByJustinWu";
     public static String createJwtToken(User user){
 
@@ -37,9 +37,17 @@ public class JwtUtil {
         try {
             Jws<Claims> claimsJws = Jwts.parser().setSigningKey(sign).parseClaimsJws(token);
         } catch (Exception e){
-            e.printStackTrace();
             return false;
         }
         return true;
+    }
+
+    public static Claims parseJwtToken(String token){
+        //解析jwt，轉化為key-value
+        Jws<Claims> claimsJws = Jwts.parser().setSigningKey(sign).parseClaimsJws(token);
+        Claims claims = claimsJws.getBody();
+
+        //用claims.get(key)可根據key獲取value
+        return claims;
     }
 }

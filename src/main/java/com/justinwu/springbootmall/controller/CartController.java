@@ -4,6 +4,7 @@ import com.justinwu.springbootmall.dto.CartItemRequest;
 import com.justinwu.springbootmall.model.CartItem;
 import com.justinwu.springbootmall.model.Product;
 import com.justinwu.springbootmall.service.CartService;
+import com.justinwu.springbootmall.tool.UserLoginToken;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ public class CartController {
     @Autowired
     private CartService cartService;
 
+    @UserLoginToken//需要登入權限
     @GetMapping("/users/{userId}/cart")
     public ResponseEntity<List<CartItem>> getCart(@PathVariable Integer userId){
         //取得user的cart
@@ -26,6 +28,7 @@ public class CartController {
         return ResponseEntity.status(HttpStatus.OK).body(cart);
     }
 
+    @UserLoginToken//需要登入權限
     @PostMapping("/users/{userId}/cart")
     public ResponseEntity<CartItem> createCartItem(@RequestBody @Valid CartItemRequest cartItemRequest){
         //建立商品後返回自動增加的cartItemId
@@ -35,6 +38,7 @@ public class CartController {
         return ResponseEntity.status(HttpStatus.CREATED).body(cartItem);
     }
 
+    @UserLoginToken//需要登入權限
     @PutMapping("/users/{userId}/cart/{cartItemId}")
     public ResponseEntity<CartItem> updateCartItem(@PathVariable Integer cartItemId,
                                                    @RequestBody @Valid CartItemRequest cartItemRequest){
@@ -49,6 +53,7 @@ public class CartController {
         return ResponseEntity.status(HttpStatus.OK).body(updatedCartItem);
     }
 
+    @UserLoginToken//需要登入權限
     @DeleteMapping("/users/{userId}/cart/{cartItemId}")
     public ResponseEntity<?> deleteCartItem(
             @PathVariable Integer userId,

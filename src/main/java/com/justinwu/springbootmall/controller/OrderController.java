@@ -5,6 +5,7 @@ import com.justinwu.springbootmall.dto.OrderQueryParams;
 import com.justinwu.springbootmall.model.Order;
 import com.justinwu.springbootmall.model.Product;
 import com.justinwu.springbootmall.service.OrderService;
+import com.justinwu.springbootmall.tool.UserLoginToken;
 import com.justinwu.springbootmall.util.Page;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
@@ -22,6 +23,7 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
+    @UserLoginToken//需要登入權限
     @GetMapping("/users/{userId}/orders")
     public  ResponseEntity<Page<Order>> gerOrders(
             @PathVariable Integer userId,
@@ -49,6 +51,7 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.OK).body(page);
     }
 
+    @UserLoginToken//需要登入權限
     @PostMapping("/users/{userId}/orders")
     public ResponseEntity<Order> createOrder(@PathVariable Integer userId,
                                          @RequestBody @Valid CreateOrderRequest createOrderRequest){
