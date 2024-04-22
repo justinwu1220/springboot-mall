@@ -70,6 +70,7 @@ public class LoginInterceptor implements HandlerInterceptor {
                 return true;
             }
         }
-        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "無註解權限，不允許通過");
+        //throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "訪問路徑錯誤或無註解權限，不允許通過");
+        return false;
     }
 }

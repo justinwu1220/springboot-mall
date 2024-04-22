@@ -43,7 +43,7 @@ public class CartDaoImpl implements CartDao {
     @Override
     public CartItem getCartItemById(Integer cartItemId) {
         String sql = "SELECT ci.cart_item_id, u.user_id, p.product_id," +
-                "p.product_name, p.image_url, ci.quantity " +
+                "p.product_name, p.image_url, p.price, ci.quantity " +
                 "FROM cart_item AS ci " +
                 "INNER JOIN " +
                 "product AS p ON ci.product_id = p.product_id " +

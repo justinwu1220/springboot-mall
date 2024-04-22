@@ -7,6 +7,7 @@ public class CartItem {
     private String productName;
     private String imageUrl;
     private Integer quantity;
+    private Integer price;
 
     public Integer getCartItemId() {
         return cartItemId;
@@ -54,5 +55,13 @@ public class CartItem {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
     }
 }
