@@ -1,8 +1,10 @@
 package com.justinwu.springbootmall.service.impl;
 
 import com.justinwu.springbootmall.dao.UserDao;
+import com.justinwu.springbootmall.dto.UserAddressInfoRequest;
 import com.justinwu.springbootmall.dto.UserLoginRequest;
 import com.justinwu.springbootmall.dto.UserRegisterRequest;
+import com.justinwu.springbootmall.model.UserAddressInfo;
 import com.justinwu.springbootmall.model.User;
 import com.justinwu.springbootmall.service.UserService;
 import com.justinwu.springbootmall.util.JwtUtil;
@@ -13,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 @Component
 public class UserServiceImpl implements UserService {
@@ -66,5 +70,24 @@ public class UserServiceImpl implements UserService {
             log.warn("email {} 的密碼錯誤", userLoginRequest.getEmail());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "密碼錯誤");
         }
+    }
+
+    @Override
+    public UserAddressInfo getUserAddressInfoById(Integer infoId) {
+        return userDao.getUserAddressInfoById(infoId);
+    }
+
+    @Override
+    public List<UserAddressInfo> getUserAddressInfoByUserId(Integer userId) {
+
+        return userDao.getUserAddressInfoByUserId(userId);
+    }
+
+    @Override
+    public Integer createUserAddressInfo(UserAddressInfoRequest userAddressInfoRequest) {
+
+        Integer userAddressInfoId = userDao.createUserAddressInfo(userAddressInfoRequest);
+
+        return userAddressInfoId;
     }
 }

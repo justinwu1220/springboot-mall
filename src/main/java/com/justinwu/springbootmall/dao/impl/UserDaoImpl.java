@@ -1,10 +1,11 @@
 package com.justinwu.springbootmall.dao.impl;
 
 import com.justinwu.springbootmall.dao.UserDao;
+import com.justinwu.springbootmall.dto.UserAddressInfoRequest;
 import com.justinwu.springbootmall.dto.UserRegisterRequest;
-import com.justinwu.springbootmall.model.Product;
+import com.justinwu.springbootmall.model.UserAddressInfo;
 import com.justinwu.springbootmall.model.User;
-import com.justinwu.springbootmall.rowmapper.ProductRowMapper;
+import com.justinwu.springbootmall.rowmapper.UserAddressInfoRowMapper;
 import com.justinwu.springbootmall.rowmapper.UserRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -80,5 +81,52 @@ public class UserDaoImpl implements UserDao {
         else{
             return null;
         }
+    }
+
+    @Override
+    public UserAddressInfo getUserAddressInfoById(Integer userAddressInfoId) {
+        String sql = "SELECT user_address_info_id, user_id, receiver, contact, address " +
+                "FROM user_address_info WHERE user_address_info_id = :userAddressInfoId";
+        Map<String, Object> map = new HashMap<>();
+        map.put("userAddressInfoId", userAddressInfoId);
+
+        List<UserAddressInfo> infoList = namedParameterJdbcTemplate.query(sql, map, new UserAddressInfoRowMapper());
+
+        if(infoList.size()>0) {
+            return infoList.get(0);
+        }
+        else{
+            return null;
+        }
+    }
+
+    @Override
+    public List<UserAddressInfo> getUserAddressInfoByUserId(Integer userId) {
+        String sql = "SELECT user_address_info_id, user_id, receiver, contact, address " +
+                "FROM user_address_info WHERE user_id = :userId";
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+
+        List<UserAddressInfo> infoList = namedParameterJdbcTemplate.query(sql, map, new UserAddressInfoRowMapper());
+        return infoList;
+    }
+
+    @Override
+    public Integer createUserAddressInfo(UserAddressInfoRequest checkoutInfoRequest) {
+        String sql = "INSERT INTO user_address_info(user_id, receiver, contact, address) " +
+                "VALUES (:userId, :receiver, :contact, :address)";
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", checkoutInfoRequest.getUserId());
+        map.put("receiver", checkoutInfoRequest.getReceiver());
+        map.put("contact", checkoutInfoRequest.getContact());
+        map.put("address", checkoutInfoRequest.getAddress());
+
+        //取得資料庫自動產生的checkOutInfoId
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource(map), keyHolder);
+        int userAddressInfoId = keyHolder.getKey().intValue();
+
+        return userAddressInfoId;
     }
 }
