@@ -1,6 +1,7 @@
 package com.justinwu.springbootmall.dao.impl;
 
 import com.justinwu.springbootmall.dao.OrderDao;
+import com.justinwu.springbootmall.dto.CreateOrderRequest;
 import com.justinwu.springbootmall.dto.OrderQueryParams;
 import com.justinwu.springbootmall.dto.ProductQueryParams;
 import com.justinwu.springbootmall.model.Order;
@@ -42,8 +43,9 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public List<Order> getOrders(OrderQueryParams orderQueryParams) {
-        String sql = "SELECT order_id, user_id, total_amount, created_date, last_modified_date" +
-                " FROM `order` WHERE 1=1";
+        String sql = "SELECT order_id, user_id, total_amount, created_date, last_modified_date," +
+                "receiver, contact, address " +
+                "FROM `order` WHERE 1=1";
         Map<String, Object> map = new HashMap<>();
 
         //查詢條件
@@ -62,8 +64,9 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public Order getOrderById(Integer orderId) {
-        String sql = "SELECT order_id, user_id, total_amount, created_date, last_modified_date" +
-                " FROM `order` WHERE order_id = :orderId";
+        String sql = "SELECT order_id, user_id, total_amount, created_date, last_modified_date," +
+                "receiver, contact, address " +
+                "FROM `order` WHERE order_id = :orderId";
 
         Map<String, Object> map = new HashMap<>();
         map.put("orderId", orderId);
@@ -94,14 +97,18 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public Integer createOrder(Integer userId, Integer totalAmount) {
-        String sql = "INSERT INTO `order`(user_id, total_amount, created_date, last_modified_date)" +
-                " VALUES (:userId, :totalAmount, :createdDate, :lastModifiedDate)";
+    public Integer createOrder(Integer userId, Integer totalAmount, CreateOrderRequest createOrderRequest) {
+        String sql = "INSERT INTO `order`(user_id, total_amount, created_date, last_modified_date," +
+                "receiver, contact, address) " +
+                "VALUES (:userId, :totalAmount, :createdDate, :lastModifiedDate, :receiver, :contact, :address)";
 
         //用map將變數值帶入sql中
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
         map.put("totalAmount", totalAmount);
+        map.put("receiver", createOrderRequest.getReceiver());
+        map.put("contact", createOrderRequest.getContact());
+        map.put("address", createOrderRequest.getAddress());
 
         Date now = new Date();
         map.put("createdDate", now);

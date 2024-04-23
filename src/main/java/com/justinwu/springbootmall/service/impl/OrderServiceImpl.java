@@ -1,15 +1,13 @@
 package com.justinwu.springbootmall.service.impl;
 
+import com.justinwu.springbootmall.dao.CartDao;
 import com.justinwu.springbootmall.dao.OrderDao;
 import com.justinwu.springbootmall.dao.ProductDao;
 import com.justinwu.springbootmall.dao.UserDao;
 import com.justinwu.springbootmall.dto.BuyItem;
 import com.justinwu.springbootmall.dto.CreateOrderRequest;
 import com.justinwu.springbootmall.dto.OrderQueryParams;
-import com.justinwu.springbootmall.model.Order;
-import com.justinwu.springbootmall.model.OrderItem;
-import com.justinwu.springbootmall.model.Product;
-import com.justinwu.springbootmall.model.User;
+import com.justinwu.springbootmall.model.*;
 import com.justinwu.springbootmall.service.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +33,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private CartDao cartDao;
 
     @Override
     public Integer countOrder(OrderQueryParams orderQueryParams) {
@@ -73,7 +74,7 @@ public class OrderServiceImpl implements OrderService {
 
         if (user == null){
             log.warn("user {} 不存在", userId);
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "用戶不存在");
         }
 
         int totalAmount = 0;
@@ -81,16 +82,26 @@ public class OrderServiceImpl implements OrderService {
 
         for(BuyItem buyItem : createOrderRequest.getBuyItemList()){
             Product product = productDao.getProductById(buyItem.getProductId());
+            CartItem cartItem = cartDao.getCartItemById(buyItem.getCartItemId());
+
+            //檢查 cartItem 是否存在
+            if( cartItem == null){
+                log.warn("購物車商品 {} 不存在", buyItem.getCartItemId());
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "購物車商品不存在");
+            }
 
             //檢查 product 是否存在、庫存是否足夠
             if (product == null){
                 log.warn("商品 {} 不存在", buyItem.getProductId());
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "商品不存在");
             }else if(product.getStock() < buyItem.getQuantity()){
                 log.warn("商品 {} 庫存數量不足，無法購買。剩餘庫存 {}，欲購買數量 {}",
                         buyItem.getProductId(), product.getStock(), buyItem.getQuantity());
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "商品庫存數量不足，無法購買");
             }
+
+            //移除購物車商品
+            cartDao.deleteCartItemById(cartItem.getCartItemId());
 
             //扣除商品庫存
             productDao.updateStock(product.getProductId(), product.getStock() - buyItem.getQuantity());
@@ -109,7 +120,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         //創建訂單
-        Integer orderId = orderDao.createOrder(userId, totalAmount);
+        Integer orderId = orderDao.createOrder(userId, totalAmount, createOrderRequest);
 
         orderDao.createOrderItems(orderId, orderItemList);
 

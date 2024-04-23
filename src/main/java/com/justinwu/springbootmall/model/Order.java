@@ -11,6 +11,9 @@ public class Order {
     private Date createdDate;
     private Date lastModifiedDate;
     private List<OrderItem> orderItemList;
+    private String receiver;
+    private String contact;
+    private String address;
 
     public Integer getOrderId() {
         return orderId;
@@ -58,5 +61,29 @@ public class Order {
 
     public void setOrderItemList(List<OrderItem> orderItemList) {
         this.orderItemList = orderItemList;
+    }
+
+    public String getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
+    }
+
+    public String getContact() {
+        return contact;
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

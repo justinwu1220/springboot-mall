@@ -41,7 +41,7 @@ public class UserController {
     }
 
     @UserLoginToken //需要登入權限
-    @GetMapping("/users/{userId}/checkOutInfo")
+    @GetMapping("/users/{userId}/addressInfo")
     public ResponseEntity<List<UserAddressInfo>> getUserAddressInfo(@PathVariable Integer userId){
         List<UserAddressInfo> infoList = userService.getUserAddressInfoByUserId(userId);
 
@@ -50,7 +50,7 @@ public class UserController {
 
 
     @UserLoginToken //需要登入權限
-    @PostMapping("/users/{userId}/checkOutInfo")
+    @PostMapping("/users/{userId}/addressInfo")
     public ResponseEntity<UserAddressInfo> createUserAddressInfo(@RequestBody UserAddressInfoRequest userAddressInfoRequest){
         //建立info後返回自動增加的infoId
         Integer infoId = userService.createUserAddressInfo(userAddressInfoRequest);
