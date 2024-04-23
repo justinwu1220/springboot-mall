@@ -1,9 +1,16 @@
 package com.justinwu.springbootmall.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 public class UserAddressInfoRequest {
+    @NotNull
     private Integer userId;
+    @NotBlank
     private String receiver;
+    @NotBlank
     private String contact;
+    @NotBlank
     private String address;
 
     public Integer getUserId() {

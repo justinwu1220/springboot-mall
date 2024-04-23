@@ -1,13 +1,14 @@
 package com.justinwu.springbootmall.dto;
 
 import com.justinwu.springbootmall.constant.ProductCategory;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
 //將前端傳來的request body 提取出變數值
 public class ProductRequest {
-    @NotNull
+    @NotBlank
     private String productName;
     @NotNull
     private ProductCategory category;

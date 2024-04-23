@@ -51,7 +51,7 @@ public class UserController {
 
     @UserLoginToken //需要登入權限
     @PostMapping("/users/{userId}/addressInfo")
-    public ResponseEntity<UserAddressInfo> createUserAddressInfo(@RequestBody UserAddressInfoRequest userAddressInfoRequest){
+    public ResponseEntity<UserAddressInfo> createUserAddressInfo(@RequestBody @Valid UserAddressInfoRequest userAddressInfoRequest){
         //建立info後返回自動增加的infoId
         Integer infoId = userService.createUserAddressInfo(userAddressInfoRequest);
         //透過infoId查詢建立好的info並返回給前端
