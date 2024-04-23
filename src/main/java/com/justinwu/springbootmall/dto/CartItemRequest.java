@@ -9,6 +9,8 @@ public class CartItemRequest {
     private Integer productId;
     @NotNull
     private Integer quantity;
+    @NotNull
+    private Boolean selected;
 
     public Integer getUserId() {
         return userId;
@@ -32,5 +34,13 @@ public class CartItemRequest {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public Boolean getSelected() {
+        return selected;
+    }
+
+    public void setSelected(Boolean selected) {
+        this.selected = selected;
     }
 }

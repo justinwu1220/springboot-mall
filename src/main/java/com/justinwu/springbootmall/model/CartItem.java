@@ -7,6 +7,7 @@ public class CartItem {
     private String productName;
     private String imageUrl;
     private Integer quantity;
+    private Boolean selected;
     private Integer price;
 
     public Integer getCartItemId() {
@@ -55,6 +56,14 @@ public class CartItem {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public Boolean getSelected() {
+        return selected;
+    }
+
+    public void setSelected(Boolean selected) {
+        this.selected = selected;
     }
 
     public Integer getPrice() {

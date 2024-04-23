@@ -24,7 +24,7 @@ public class CartDaoImpl implements CartDao {
     @Override
     public List<CartItem> getCartByUserId(Integer userId) {
         String sql = "SELECT ci.cart_item_id, u.user_id, p.product_id," +
-                "p.product_name, p.image_url, p.price, ci.quantity " +
+                "p.product_name, p.image_url, p.price, ci.quantity, ci.selected " +
                 "FROM cart_item AS ci " +
                 "INNER JOIN " +
                 "product AS p ON ci.product_id = p.product_id " +
@@ -43,7 +43,7 @@ public class CartDaoImpl implements CartDao {
     @Override
     public CartItem getCartItemById(Integer cartItemId) {
         String sql = "SELECT ci.cart_item_id, u.user_id, p.product_id," +
-                "p.product_name, p.image_url, p.price, ci.quantity " +
+                "p.product_name, p.image_url, p.price, ci.quantity, ci.selected " +
                 "FROM cart_item AS ci " +
                 "INNER JOIN " +
                 "product AS p ON ci.product_id = p.product_id " +
@@ -67,14 +67,15 @@ public class CartDaoImpl implements CartDao {
 
     @Override
     public Integer createCartItem(CartItemRequest cartItemRequest) {
-        String sql = "INSERT INTO cart_item(user_id,product_id,quantity) " +
-                "VALUES (:userId, :productId, :quantity)";
+        String sql = "INSERT INTO cart_item(user_id, product_id, quantity, selected) " +
+                "VALUES (:userId, :productId, :quantity, :selected)";
 
         //用map將變數值帶入sql中
         Map<String, Object> map = new HashMap<>();
         map.put("userId", cartItemRequest.getUserId());
         map.put("productId", cartItemRequest.getProductId());
         map.put("quantity", cartItemRequest.getQuantity());
+        map.put("selected", cartItemRequest.getSelected());
 
         //取得資料庫自動產生的cartItemId
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -86,8 +87,8 @@ public class CartDaoImpl implements CartDao {
 
     @Override
     public void updateCartItem(Integer cartItemId, CartItemRequest cartItemRequest) {
-        String sql = "UPDATE cart_item SET user_id = :userId," +
-                "product_id = :productId, quantity = :quantity " +
+        String sql = "UPDATE cart_item SET user_id = :userId, product_id = :productId, " +
+                "quantity = :quantity, selected = :selected " +
                 "WHERE cart_item_id = :cartItemId";
 
         Map<String, Object> map = new HashMap<>();
@@ -95,6 +96,7 @@ public class CartDaoImpl implements CartDao {
         map.put("userId", cartItemRequest.getUserId());
         map.put("productId", cartItemRequest.getProductId());
         map.put("quantity", cartItemRequest.getQuantity());
+        map.put("selected", cartItemRequest.getSelected());
 
         namedParameterJdbcTemplate.update(sql, map);
     }

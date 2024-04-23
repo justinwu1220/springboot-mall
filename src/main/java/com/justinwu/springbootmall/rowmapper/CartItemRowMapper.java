@@ -19,6 +19,7 @@ public class CartItemRowMapper implements RowMapper<CartItem> {
         cartItem.setImageUrl(rs.getString("image_url"));
         cartItem.setPrice(rs.getInt("price"));
         cartItem.setQuantity(rs.getInt("quantity"));
+        cartItem.setSelected(rs.getBoolean("selected"));
 
         return cartItem;
     }
