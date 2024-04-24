@@ -6,7 +6,9 @@ import com.justinwu.springbootmall.model.Order;
 import com.justinwu.springbootmall.model.Product;
 import com.justinwu.springbootmall.service.OrderService;
 import com.justinwu.springbootmall.tool.UserLoginToken;
+import com.justinwu.springbootmall.util.JwtUtil;
 import com.justinwu.springbootmall.util.Page;
+import io.jsonwebtoken.Claims;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -24,12 +26,16 @@ public class OrderController {
     private OrderService orderService;
 
     @UserLoginToken//需要登入權限
-    @GetMapping("/users/{userId}/orders")
+    @GetMapping("/users/orders")
     public  ResponseEntity<Page<Order>> gerOrders(
-            @PathVariable Integer userId,
+            @RequestHeader("token") String token,
             @RequestParam(defaultValue = "10") @Max(1000) @Min(0) Integer limit,
             @RequestParam(defaultValue = "0") @Min(0) Integer offset
     ){
+        // 獲取 token 中的 userId
+        Claims claims = JwtUtil.parseJwtToken(token);
+        Integer userId = Integer.valueOf(claims.getId());
+
         OrderQueryParams orderQueryParams = new OrderQueryParams();
         orderQueryParams.setUserId(userId);
         orderQueryParams.setLimit(limit);
@@ -52,9 +58,13 @@ public class OrderController {
     }
 
     @UserLoginToken//需要登入權限
-    @PostMapping("/users/{userId}/orders")
-    public ResponseEntity<Order> createOrder(@PathVariable Integer userId,
+    @PostMapping("/users/orders")
+    public ResponseEntity<Order> createOrder(@RequestHeader("token") String token,
                                          @RequestBody @Valid CreateOrderRequest createOrderRequest){
+        // 獲取 token 中的 userId
+        Claims claims = JwtUtil.parseJwtToken(token);
+        Integer userId = Integer.valueOf(claims.getId());
+
         Integer orderId = orderService.createOrder(userId, createOrderRequest);
 
         Order order = orderService.getOrderById(orderId);

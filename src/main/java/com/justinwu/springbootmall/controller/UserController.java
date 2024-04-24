@@ -8,6 +8,8 @@ import com.justinwu.springbootmall.model.User;
 import com.justinwu.springbootmall.service.UserService;
 import com.justinwu.springbootmall.tool.PassToken;
 import com.justinwu.springbootmall.tool.UserLoginToken;
+import com.justinwu.springbootmall.util.JwtUtil;
+import io.jsonwebtoken.Claims;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,8 +43,12 @@ public class UserController {
     }
 
     @UserLoginToken //需要登入權限
-    @GetMapping("/users/{userId}/addressInfo")
-    public ResponseEntity<List<UserAddressInfo>> getUserAddressInfo(@PathVariable Integer userId){
+    @GetMapping("/users/addressInfo")
+    public ResponseEntity<List<UserAddressInfo>> getUserAddressInfo(@RequestHeader("token") String token){
+        // 獲取 token 中的 userId
+        Claims claims = JwtUtil.parseJwtToken(token);
+        Integer userId = Integer.valueOf(claims.getId());
+
         List<UserAddressInfo> infoList = userService.getUserAddressInfoByUserId(userId);
 
         return ResponseEntity.status(HttpStatus.OK).body(infoList);
@@ -50,8 +56,16 @@ public class UserController {
 
 
     @UserLoginToken //需要登入權限
-    @PostMapping("/users/{userId}/addressInfo")
-    public ResponseEntity<UserAddressInfo> createUserAddressInfo(@RequestBody @Valid UserAddressInfoRequest userAddressInfoRequest){
+    @PostMapping("/users/addressInfo")
+    public ResponseEntity<UserAddressInfo> createUserAddressInfo(@RequestHeader("token") String token,
+                                                                 @RequestBody @Valid UserAddressInfoRequest userAddressInfoRequest){
+
+        // 獲取 token 中的 userId
+        Claims claims = JwtUtil.parseJwtToken(token);
+        Integer userId = Integer.valueOf(claims.getId());
+
+        userAddressInfoRequest.setUserId(userId);
+
         //建立info後返回自動增加的infoId
         Integer infoId = userService.createUserAddressInfo(userAddressInfoRequest);
         //透過infoId查詢建立好的info並返回給前端
