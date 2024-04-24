@@ -66,13 +66,13 @@ public class CartDaoImpl implements CartDao {
     }
 
     @Override
-    public Integer createCartItem(CartItemRequest cartItemRequest) {
+    public Integer createCartItem(Integer userId, CartItemRequest cartItemRequest) {
         String sql = "INSERT INTO cart_item(user_id, product_id, quantity, selected) " +
                 "VALUES (:userId, :productId, :quantity, :selected)";
 
         //用map將變數值帶入sql中
         Map<String, Object> map = new HashMap<>();
-        map.put("userId", cartItemRequest.getUserId());
+        map.put("userId", userId);
         map.put("productId", cartItemRequest.getProductId());
         map.put("quantity", cartItemRequest.getQuantity());
         map.put("selected", cartItemRequest.getSelected());
@@ -86,14 +86,14 @@ public class CartDaoImpl implements CartDao {
     }
 
     @Override
-    public void updateCartItem(Integer cartItemId, CartItemRequest cartItemRequest) {
+    public void updateCartItem(Integer userId, Integer cartItemId, CartItemRequest cartItemRequest) {
         String sql = "UPDATE cart_item SET user_id = :userId, product_id = :productId, " +
                 "quantity = :quantity, selected = :selected " +
                 "WHERE cart_item_id = :cartItemId";
 
         Map<String, Object> map = new HashMap<>();
         map.put("cartItemId", cartItemId);
-        map.put("userId", cartItemRequest.getUserId());
+        map.put("userId", userId);
         map.put("productId", cartItemRequest.getProductId());
         map.put("quantity", cartItemRequest.getQuantity());
         map.put("selected", cartItemRequest.getSelected());

@@ -10,7 +10,9 @@ public interface CartService {
 
     List<CartItem> getCartByUserId(Integer userId);
     CartItem getCartItemById(Integer cartItemId);
-    Integer createCartItem(CartItemRequest cartItemRequest);
-    void updateCartItem(Integer cartItemId, CartItemRequest cartItemRequest);
-    void deleteCartItemById(Integer cartItemId);
+    Integer createCartItem(Integer userId, CartItemRequest cartItemRequest);
+    void updateCartItem(Integer userId, Integer cartItemId, CartItemRequest cartItemRequest);
+    void deleteCartItemById(Integer userId, Integer cartItemId);
+    Boolean isUserExist(Integer userId);
+    Boolean isBelong(Integer userId, Integer cartItemId);
 }

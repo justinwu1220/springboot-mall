@@ -4,21 +4,12 @@ import jakarta.validation.constraints.NotNull;
 
 public class CartItemRequest {
     @NotNull
-    private Integer userId;
-    @NotNull
     private Integer productId;
     @NotNull
     private Integer quantity;
     @NotNull
     private Boolean selected;
 
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
 
     public Integer getProductId() {
         return productId;

@@ -8,7 +8,7 @@ import java.util.List;
 public interface CartDao {
     List<CartItem> getCartByUserId(Integer userId);
     CartItem getCartItemById(Integer cartItemId);
-    Integer createCartItem(CartItemRequest cartItemRequest);
-    void updateCartItem(Integer cartItemId, CartItemRequest cartItemRequest);
+    Integer createCartItem(Integer userId, CartItemRequest cartItemRequest);
+    void updateCartItem(Integer userId, Integer cartItemId, CartItemRequest cartItemRequest);
     void deleteCartItemById(Integer cartItemId);
 }
