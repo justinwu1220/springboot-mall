@@ -116,12 +116,12 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Integer createUserAddressInfo(UserAddressInfoRequest checkoutInfoRequest) {
+    public Integer createUserAddressInfo(Integer userId, UserAddressInfoRequest checkoutInfoRequest) {
         String sql = "INSERT INTO user_address_info(user_id, receiver, contact, address) " +
                 "VALUES (:userId, :receiver, :contact, :address)";
 
         Map<String, Object> map = new HashMap<>();
-        map.put("userId", checkoutInfoRequest.getUserId());
+        map.put("userId", userId);
         map.put("receiver", checkoutInfoRequest.getReceiver());
         map.put("contact", checkoutInfoRequest.getContact());
         map.put("address", checkoutInfoRequest.getAddress());

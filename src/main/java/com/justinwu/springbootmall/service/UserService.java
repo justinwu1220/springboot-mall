@@ -16,5 +16,5 @@ public interface UserService {
 
     UserAddressInfo getUserAddressInfoById(Integer checkoutInfoId);
     List<UserAddressInfo> getUserAddressInfoByUserId(Integer userId);
-    Integer createUserAddressInfo(UserAddressInfoRequest checkoutInfoRequest);
+    Integer createUserAddressInfo(Integer userId, UserAddressInfoRequest checkoutInfoRequest);
 }

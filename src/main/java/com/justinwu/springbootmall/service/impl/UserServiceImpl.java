@@ -84,9 +84,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Integer createUserAddressInfo(UserAddressInfoRequest userAddressInfoRequest) {
+    public Integer createUserAddressInfo(Integer userId, UserAddressInfoRequest userAddressInfoRequest) {
+        //檢查 user 是否存在
+        User user = userDao.getUserById(userId);
 
-        Integer userAddressInfoId = userDao.createUserAddressInfo(userAddressInfoRequest);
+        if (user == null){
+            log.warn("user {} 不存在", userId);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "用戶不存在");
+        }
+
+        Integer userAddressInfoId = userDao.createUserAddressInfo(userId, userAddressInfoRequest);
 
         return userAddressInfoId;
     }

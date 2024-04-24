@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotNull;
 
 public class UserAddressInfoRequest {
 
-    private Integer userId;
     @NotBlank
     private String receiver;
     @NotBlank
@@ -13,13 +12,6 @@ public class UserAddressInfoRequest {
     @NotBlank
     private String address;
 
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
 
     public String getReceiver() {
         return receiver;

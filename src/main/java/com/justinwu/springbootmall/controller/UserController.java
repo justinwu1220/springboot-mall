@@ -64,10 +64,8 @@ public class UserController {
         Claims claims = JwtUtil.parseJwtToken(token);
         Integer userId = Integer.valueOf(claims.getId());
 
-        userAddressInfoRequest.setUserId(userId);
-
         //建立info後返回自動增加的infoId
-        Integer infoId = userService.createUserAddressInfo(userAddressInfoRequest);
+        Integer infoId = userService.createUserAddressInfo(userId, userAddressInfoRequest);
         //透過infoId查詢建立好的info並返回給前端
         UserAddressInfo info = userService.getUserAddressInfoById(infoId);
 

@@ -13,5 +13,5 @@ public interface UserDao {
     User getUserByEmail(String email);
     UserAddressInfo getUserAddressInfoById(Integer userAddressInfoId);
     List<UserAddressInfo> getUserAddressInfoByUserId(Integer userId);
-    Integer createUserAddressInfo(UserAddressInfoRequest userAddressInfoRequest);
+    Integer createUserAddressInfo(Integer userId, UserAddressInfoRequest userAddressInfoRequest);
 }
