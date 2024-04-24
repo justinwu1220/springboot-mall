@@ -1,12 +1,13 @@
 package com.justinwu.springbootmall.interceptor;
 
+import com.justinwu.springbootmall.constant.Authority;
 import com.justinwu.springbootmall.model.User;
 import com.justinwu.springbootmall.service.UserService;
+import com.justinwu.springbootmall.tool.AdminAuthorityCheck;
 import com.justinwu.springbootmall.tool.PassToken;
 import com.justinwu.springbootmall.tool.UserLoginToken;
 import com.justinwu.springbootmall.util.JwtUtil;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -67,9 +68,23 @@ public class LoginInterceptor implements HandlerInterceptor {
                     throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "用戶不存在，請重新登入");
                 }
 
+                //檢查方法是否有AdminAuthorityCheck註解，有的話必須經過驗證
+                if (method.isAnnotationPresent(AdminAuthorityCheck.class)) {
+                    AdminAuthorityCheck adminAuthorityCheck = method.getAnnotation(AdminAuthorityCheck.class);
+                    if (adminAuthorityCheck.required()) {
+                        if(user.getAuthority().equals(Authority.ADMIN)){
+                            return true;
+                        } else{
+                            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "用戶權限不足");
+                        }
+                    }
+                }
+
                 return true;
             }
         }
+
+
         //throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "訪問路徑錯誤或無註解權限，不允許通過");
         return false;
     }

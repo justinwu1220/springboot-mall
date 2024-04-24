@@ -5,6 +5,7 @@ import com.justinwu.springbootmall.dto.ProductQueryParams;
 import com.justinwu.springbootmall.dto.ProductRequest;
 import com.justinwu.springbootmall.model.Product;
 import com.justinwu.springbootmall.service.ProductService;
+import com.justinwu.springbootmall.tool.AdminAuthorityCheck;
 import com.justinwu.springbootmall.tool.PassToken;
 import com.justinwu.springbootmall.tool.UserLoginToken;
 import com.justinwu.springbootmall.util.Page;
@@ -79,6 +80,7 @@ public class ProductController {
         }
     }
 
+    @AdminAuthorityCheck//需要Admin權限
     @UserLoginToken//需要登入權限
     @PostMapping("/products")//建立商品
     public ResponseEntity<Product> createProduct(@RequestBody @Valid ProductRequest productRequest){
@@ -89,6 +91,7 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED).body(product);
     }
 
+    @AdminAuthorityCheck//需要Admin權限
     @UserLoginToken//需要登入權限
     @PutMapping("/products/{productId}")//更新商品
     public ResponseEntity<Product> updateProduct(@PathVariable Integer productId,
@@ -105,6 +108,7 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(updatedProduct);
     }
 
+    @AdminAuthorityCheck//需要Admin權限
     @UserLoginToken//需要登入權限
     @DeleteMapping("/products/{productId}")//刪除商品
     public ResponseEntity<?> deleteProduct(@PathVariable Integer productId){

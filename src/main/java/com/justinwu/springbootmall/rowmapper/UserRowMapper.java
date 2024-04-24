@@ -1,5 +1,6 @@
 package com.justinwu.springbootmall.rowmapper;
 
+import com.justinwu.springbootmall.constant.Authority;
 import com.justinwu.springbootmall.constant.ProductCategory;
 import com.justinwu.springbootmall.model.Product;
 import com.justinwu.springbootmall.model.User;
@@ -16,6 +17,7 @@ public class UserRowMapper implements RowMapper<User> {
         User user = new User();
         user.setUserId(rs.getInt("user_id"));
         user.setEmail(rs.getString("email"));
+        user.setAuthority(Authority.valueOf(rs.getString("authority")));
         user.setPassword(rs.getString("password"));
         user.setCreatedDate(rs.getTimestamp("created_date"));
         user.setLastModifiedDate(rs.getTimestamp("last_modified_date"));

@@ -1,13 +1,14 @@
 package com.justinwu.springbootmall.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.justinwu.springbootmall.constant.Authority;
 
 import java.util.Date;
 
 public class User {
     private Integer userId;
     private String email;
-
+    private Authority authority;
     @JsonIgnore
     private String password;
     private Date createdDate;
@@ -28,6 +29,14 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Authority getAuthority() {
+        return authority;
+    }
+
+    public void setAuthority(Authority authority) {
+        this.authority = authority;
     }
 
     public String getPassword() {
