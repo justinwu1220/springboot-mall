@@ -49,7 +49,9 @@ public class ProductServiceImpl implements ProductService {
         //新增商品
         Integer productId = productDao.createProduct(productRequest);
         //新增productOtherImages
-        productDao.createProductOtherImages(productId, otherImagesUrlList);
+        if(otherImagesUrlList != null) {
+            productDao.createProductOtherImages(productId, otherImagesUrlList);
+        }
         return productId;
     }
 
@@ -61,7 +63,9 @@ public class ProductServiceImpl implements ProductService {
         //由於product other images表較特殊，因此先刪後建立，而不使用update//可以再優化
         List<String> otherImagesUrlList = productRequest.getOtherImagesUrl();
         productDao.deleteProductOtherImagesById(productId);
-        productDao.createProductOtherImages(productId, otherImagesUrlList);
+        if(otherImagesUrlList != null) {
+            productDao.createProductOtherImages(productId, otherImagesUrlList);
+        }
     }
 
     @Override
