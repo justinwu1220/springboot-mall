@@ -68,22 +68,36 @@ public class LoginInterceptor implements HandlerInterceptor {
                     throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "用戶不存在，請重新登入");
                 }
 
-                //檢查方法是否有AdminAuthorityCheck註解，有的話必須經過驗證
-                if (method.isAnnotationPresent(AdminAuthorityCheck.class)) {
-                    AdminAuthorityCheck adminAuthorityCheck = method.getAnnotation(AdminAuthorityCheck.class);
-                    if (adminAuthorityCheck.required()) {
-                        if(user.getAuthority().equals(Authority.ADMIN)){
-                            return true;
-                        } else{
-                            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "用戶權限不足");
-                        }
-                    }
-                }
-
                 return true;
             }
         }
 
+        //檢查方法是否有AdminAuthorityCheck註解，有的話必須經過驗證
+        if (method.isAnnotationPresent(AdminAuthorityCheck.class)) {
+            AdminAuthorityCheck adminAuthorityCheck = method.getAnnotation(AdminAuthorityCheck.class);
+            if (adminAuthorityCheck.required()) {
+                //驗證
+                if (!JwtUtil.checkJwtToken(token)) {
+                    throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "無token，token過期或不正確，請重新登入");
+                }
+
+                // 獲取 token 中的 userId
+                Claims claims = JwtUtil.parseJwtToken(token);
+                Integer userId = Integer.valueOf(claims.getId());
+
+                //查詢用戶是否存在
+                User user = userService.getUserById(userId);
+                if (user == null) {
+                    throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "用戶不存在，請重新登入");
+                }
+
+                if(user.getAuthority().equals(Authority.ADMIN)){
+                    return true;
+                } else{
+                    throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "用戶權限不足");
+                }
+            }
+        }
 
         //throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "訪問路徑錯誤或無註解權限，不允許通過");
         return false;

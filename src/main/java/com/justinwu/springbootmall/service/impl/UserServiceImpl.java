@@ -97,4 +97,9 @@ public class UserServiceImpl implements UserService {
 
         return userAddressInfoId;
     }
+
+    @Override
+    public List<User> getAllUsers() {
+        return userDao.getAllUsers();
+    }
 }

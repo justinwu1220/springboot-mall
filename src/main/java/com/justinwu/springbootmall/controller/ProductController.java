@@ -81,7 +81,6 @@ public class ProductController {
     }
 
     @AdminAuthorityCheck//需要Admin權限
-    @UserLoginToken//需要登入權限
     @PostMapping("/products")//建立商品
     public ResponseEntity<Product> createProduct(@RequestBody @Valid ProductRequest productRequest){
         //建立商品後返回自動增加的productId
@@ -92,7 +91,6 @@ public class ProductController {
     }
 
     @AdminAuthorityCheck//需要Admin權限
-    @UserLoginToken//需要登入權限
     @PutMapping("/products/{productId}")//更新商品
     public ResponseEntity<Product> updateProduct(@PathVariable Integer productId,
                                                  @RequestBody @Valid ProductRequest productRequest){
@@ -109,7 +107,6 @@ public class ProductController {
     }
 
     @AdminAuthorityCheck//需要Admin權限
-    @UserLoginToken//需要登入權限
     @DeleteMapping("/products/{productId}")//刪除商品
     public ResponseEntity<?> deleteProduct(@PathVariable Integer productId){
         //不檢查商品是否存在，因為無論商品原本是否存在，最後結果都要是不存在

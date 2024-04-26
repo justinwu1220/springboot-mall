@@ -6,6 +6,7 @@ import com.justinwu.springbootmall.dto.UserRegisterRequest;
 import com.justinwu.springbootmall.model.UserAddressInfo;
 import com.justinwu.springbootmall.model.User;
 import com.justinwu.springbootmall.service.UserService;
+import com.justinwu.springbootmall.tool.AdminAuthorityCheck;
 import com.justinwu.springbootmall.tool.PassToken;
 import com.justinwu.springbootmall.tool.UserLoginToken;
 import com.justinwu.springbootmall.util.JwtUtil;
@@ -70,5 +71,13 @@ public class UserController {
         UserAddressInfo info = userService.getUserAddressInfoById(infoId);
 
         return ResponseEntity.status(HttpStatus.OK).body(info);
+    }
+
+    @AdminAuthorityCheck
+    @GetMapping("/users")
+    public ResponseEntity<List<User>> getAllUsers(){
+
+        List<User> userList = userService.getAllUsers();
+        return ResponseEntity.status(HttpStatus.OK).body(userList);
     }
 }

@@ -133,4 +133,16 @@ public class UserDaoImpl implements UserDao {
 
         return userAddressInfoId;
     }
+
+    @Override
+    public List<User> getAllUsers() {
+        String sql = "SELECT user_id, email, password, authority, " +
+                "created_date, last_modified_date " +
+                "FROM user";
+        Map<String, Object> map = new HashMap<>();
+
+        List<User> userList = namedParameterJdbcTemplate.query(sql, map, new UserRowMapper());
+
+        return userList;
+    }
 }
