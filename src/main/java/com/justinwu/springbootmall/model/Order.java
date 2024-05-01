@@ -1,5 +1,7 @@
 package com.justinwu.springbootmall.model;
 
+import com.justinwu.springbootmall.constant.OrderState;
+
 import java.util.Date;
 import java.util.List;
 
@@ -8,6 +10,7 @@ public class Order {
     private Integer orderId;
     private Integer userId;
     private Integer totalAmount;
+    private OrderState state;
     private Date createdDate;
     private Date lastModifiedDate;
     private List<OrderItem> orderItemList;
@@ -37,6 +40,14 @@ public class Order {
 
     public void setTotalAmount(Integer totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    public OrderState getState() {
+        return state;
+    }
+
+    public void setState(OrderState state) {
+        this.state = state;
     }
 
     public Date getCreatedDate() {

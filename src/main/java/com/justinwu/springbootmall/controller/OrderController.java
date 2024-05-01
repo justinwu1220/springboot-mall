@@ -1,6 +1,7 @@
 package com.justinwu.springbootmall.controller;
 
 import com.justinwu.springbootmall.constant.Authority;
+import com.justinwu.springbootmall.constant.OrderState;
 import com.justinwu.springbootmall.dto.CreateOrderRequest;
 import com.justinwu.springbootmall.dto.OrderQueryParams;
 import com.justinwu.springbootmall.model.Order;
@@ -36,8 +37,9 @@ public class OrderController {
     public  ResponseEntity<Page<Order>> gerOrders(
             @RequestHeader("token") String token,
             @RequestParam(defaultValue = "10") @Max(1000) @Min(0) Integer limit,
-            @RequestParam(defaultValue = "0") @Min(0) Integer offset
-    ){
+            @RequestParam(defaultValue = "0") @Min(0) Integer offset,
+            @RequestParam(required = false)OrderState state
+            ){
         // 獲取 token 中的 userId
         Claims claims = JwtUtil.parseJwtToken(token);
         Integer userId = Integer.valueOf(claims.getId());
@@ -52,6 +54,7 @@ public class OrderController {
         }
         orderQueryParams.setLimit(limit);
         orderQueryParams.setOffset(offset);
+        orderQueryParams.setState(state);
 
         //取得 order list
         List<Order> orderList = orderService.getOrders(orderQueryParams);

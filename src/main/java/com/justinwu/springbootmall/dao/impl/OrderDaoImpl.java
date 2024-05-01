@@ -1,5 +1,6 @@
 package com.justinwu.springbootmall.dao.impl;
 
+import com.justinwu.springbootmall.constant.OrderState;
 import com.justinwu.springbootmall.dao.OrderDao;
 import com.justinwu.springbootmall.dto.CreateOrderRequest;
 import com.justinwu.springbootmall.dto.OrderQueryParams;
@@ -43,8 +44,8 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public List<Order> getOrders(OrderQueryParams orderQueryParams) {
-        String sql = "SELECT order_id, user_id, total_amount, created_date, last_modified_date," +
-                "receiver, contact, address " +
+        String sql = "SELECT order_id, user_id, total_amount, state," +
+                "created_date, last_modified_date, receiver, contact, address " +
                 "FROM `order` WHERE 1=1";
         Map<String, Object> map = new HashMap<>();
 
@@ -64,8 +65,8 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public Order getOrderById(Integer orderId) {
-        String sql = "SELECT order_id, user_id, total_amount, created_date, last_modified_date," +
-                "receiver, contact, address " +
+        String sql = "SELECT order_id, user_id, total_amount, state," +
+                "created_date, last_modified_date, receiver, contact, address " +
                 "FROM `order` WHERE order_id = :orderId";
 
         Map<String, Object> map = new HashMap<>();
@@ -98,9 +99,9 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public Integer createOrder(Integer userId, Integer totalAmount, CreateOrderRequest createOrderRequest) {
-        String sql = "INSERT INTO `order`(user_id, total_amount, created_date, last_modified_date," +
+        String sql = "INSERT INTO `order`(user_id, total_amount, state, created_date, last_modified_date," +
                 "receiver, contact, address) " +
-                "VALUES (:userId, :totalAmount, :createdDate, :lastModifiedDate, :receiver, :contact, :address)";
+                "VALUES (:userId, :totalAmount, :state, :createdDate, :lastModifiedDate, :receiver, :contact, :address)";
 
         //用map將變數值帶入sql中
         Map<String, Object> map = new HashMap<>();
@@ -113,6 +114,8 @@ public class OrderDaoImpl implements OrderDao {
         Date now = new Date();
         map.put("createdDate", now);
         map.put("lastModifiedDate", now);
+
+        map.put("state", OrderState.UNPAID.toString());
 
         //取得資料庫自動產生的productId
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -148,7 +151,10 @@ public class OrderDaoImpl implements OrderDao {
             sql = sql + " AND user_id = :userId";
             map.put("userId", orderQueryParams.getUserId());
         }
-
+        if(orderQueryParams.getState() != null){
+            sql = sql + " AND state = :state";
+            map.put("state", orderQueryParams.getState().toString());
+        }
         return sql;
     }
 }
