@@ -59,6 +59,27 @@ src
   * DAO
     - 與資料庫進行直接的 CRUD 操作
     - 封裝數據訪問細節
+  ```lua
+  ├─controller
+  │      CartController.java
+  │      OrderController.java
+  │      ProductController.java
+  │      UserController.java
+  │      
+  ├─service 
+  │  └─impl
+  │     CartServiceImpl.java
+  │     OrderServiceImpl.java
+  │     ProductServiceImpl.java
+  │     UserServiceImpl.java
+  │      
+  └─dao
+    └─impl
+       CartDaoImpl.java
+       OrderDaoImpl.java
+       ProductDaoImpl.java
+       UserDaoImpl.java
+  ```
 
 * JWT(JSON Web Token)
   * 使用JWT驗證使用者登入及權限
