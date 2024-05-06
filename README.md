@@ -71,4 +71,8 @@
 
   ![gif](https://github.com/justinwu1220/springboot-mall/blob/main/img/7.gif)
 
+* 註冊及登入
+
+  ![gif](https://github.com/justinwu1220/springboot-mall/blob/main/img/8.gif)
+
 
