@@ -23,7 +23,41 @@
 
 - Pinia
   - 前端狀態管理及持久化
- 
+
+## 頁面預覽
+
+* 登入頁面
+  
+  <img src="https://github.com/justinwu1220/springboot-mall/blob/main/img/4.png" >
+  <br/><br/>
+
+* 用戶頁面
+
+  <img src="https://github.com/justinwu1220/springboot-mall/blob/main/img/1.png" >
+  <br/><br/>
+
+* 商品詳情
+
+  <img src="https://github.com/justinwu1220/springboot-mall/blob/main/img/3.png" >
+  <br/><br/>
+  
+* 後台管理頁面
+
+  <img src="https://github.com/justinwu1220/springboot-mall/blob/main/img/2.png" >
+  <br/><br/>
+
 ## 功能
+
+* 依類別展示商品
+
+  ![gif](https://github.com/justinwu1220/springboot-mall/blob/main/img/1.gif)
+
+* 搜尋商品
+
+  ![gif](https://github.com/justinwu1220/springboot-mall/blob/main/img/3.gif)
+
+* 查看商品詳情
+
+  ![gif](https://github.com/justinwu1220/springboot-mall/blob/main/img/2.gif)
 
 
