@@ -26,19 +26,9 @@
 
 ## 頁面預覽
 
-* 登入頁面
-  
-  <img src="https://github.com/justinwu1220/springboot-mall/blob/main/img/4.png" >
-  <br/><br/>
-
-* 用戶頁面
+* 商店頁面
 
   <img src="https://github.com/justinwu1220/springboot-mall/blob/main/img/1.png" >
-  <br/><br/>
-
-* 商品詳情
-
-  <img src="https://github.com/justinwu1220/springboot-mall/blob/main/img/3.png" >
   <br/><br/>
   
 * 後台管理頁面
@@ -46,18 +36,27 @@
   <img src="https://github.com/justinwu1220/springboot-mall/blob/main/img/2.png" >
   <br/><br/>
 
+* 登入頁面
+  
+  <img src="https://github.com/justinwu1220/springboot-mall/blob/main/img/4.png" >
+  <br/><br/>
+
 ## 功能
 
-* 依類別展示商品
+* 分頁展示商品及依類別展示商品
 
   ![gif](https://github.com/justinwu1220/springboot-mall/blob/main/img/1.gif)
 
 * 搜尋商品
 
-  ![gif](https://github.com/justinwu1220/springboot-mall/blob/main/img/3.gif)
+  ![gif](https://github.com/justinwu1220/springboot-mall/blob/main/img/2.gif)
 
 * 查看商品詳情
 
-  ![gif](https://github.com/justinwu1220/springboot-mall/blob/main/img/2.gif)
+  ![gif](https://github.com/justinwu1220/springboot-mall/blob/main/img/3.gif)
+
+* 商品加入購物車及修改購物車內容
+
+  ![gif](https://github.com/justinwu1220/springboot-mall/blob/main/img/4.gif)
 
 
