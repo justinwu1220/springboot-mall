@@ -75,4 +75,28 @@
 
   ![gif](https://github.com/justinwu1220/springboot-mall/blob/main/img/8.gif)
 
+## 專案結構
+
+```lua
+src
+└─main
+    └─java
+       └─com.justinwu.springbootmall
+          ├─config -- 管理配置
+          ├─constant -- 管理常數項
+          ├─controller -- 控制層
+          ├─dao -- 數據訪問層
+          │  └─impl
+          ├─dto -- 資料傳輸物件
+          ├─exception -- 管理例外
+          ├─interceptor -- 攔截器
+          ├─model -- 數據模型
+          ├─rowmapper -- 管理JDBC rowmapper
+          ├─service -- 業務邏輯層
+          │  └─impl
+          ├─tool -- 非通用工具
+          └─util -- 通用工具
+
+```
+
 
