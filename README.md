@@ -41,7 +41,7 @@
   <img src="https://github.com/justinwu1220/springboot-mall/blob/main/img/4.png" >
   <br/><br/>
 
-## 功能
+## 功能(Gif展示)
 
 * 分頁展示商品及依類別展示商品
 
@@ -58,5 +58,17 @@
 * 商品加入購物車及修改購物車內容
 
   ![gif](https://github.com/justinwu1220/springboot-mall/blob/main/img/4.gif)
+  
+* 填寫收貨資訊及送出訂單
+
+  ![gif](https://github.com/justinwu1220/springboot-mall/blob/main/img/5.gif)
+
+* 管理頁面商品增刪查改
+
+  ![gif](https://github.com/justinwu1220/springboot-mall/blob/main/img/6.gif)
+
+* 管理頁面訂單及用戶查看
+
+  ![gif](https://github.com/justinwu1220/springboot-mall/blob/main/img/7.gif)
 
 
