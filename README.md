@@ -1,6 +1,9 @@
 # springboot-mall
 基於SpringBoot、MySQL、Vue 實作商店系統
 
+此專案為後端程式碼
+
+前端程式碼請前往 : <https://github.com/justinwu1220/vue3-mall>
 
 ## 技術
 - JAVA Spring Boot :
