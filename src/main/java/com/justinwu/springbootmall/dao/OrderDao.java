@@ -1,6 +1,8 @@
 package com.justinwu.springbootmall.dao;
 
+import com.justinwu.springbootmall.constant.OrderState;
 import com.justinwu.springbootmall.dto.CreateOrderRequest;
+import com.justinwu.springbootmall.dto.ECPayTrade;
 import com.justinwu.springbootmall.dto.OrderQueryParams;
 import com.justinwu.springbootmall.model.Order;
 import com.justinwu.springbootmall.model.OrderItem;
@@ -15,4 +17,7 @@ public interface OrderDao {
     List<OrderItem> getOrderItemsByOrderId(Integer orderId);
     Integer createOrder(Integer userId, Integer totalAmount, CreateOrderRequest createOrderRequest);
     void createOrderItems(Integer orderId, List<OrderItem> orderItemList);
+    void createEcpayTrade(Integer orderId, String tradeNo);
+    ECPayTrade getEcpayTradeByTradeNo(String tradeNo);
+    void updateOrderState(Integer orderId, OrderState orderState);
 }

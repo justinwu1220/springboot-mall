@@ -2,13 +2,15 @@ package com.justinwu.springbootmall.controller;
 
 import com.justinwu.springbootmall.constant.Authority;
 import com.justinwu.springbootmall.constant.OrderState;
+import com.justinwu.springbootmall.constant.ProductCategory;
 import com.justinwu.springbootmall.dto.CreateOrderRequest;
+import com.justinwu.springbootmall.dto.ECPayQueryParams;
 import com.justinwu.springbootmall.dto.OrderQueryParams;
 import com.justinwu.springbootmall.model.Order;
-import com.justinwu.springbootmall.model.Product;
 import com.justinwu.springbootmall.model.User;
 import com.justinwu.springbootmall.service.OrderService;
 import com.justinwu.springbootmall.service.UserService;
+import com.justinwu.springbootmall.tool.PassToken;
 import com.justinwu.springbootmall.tool.UserLoginToken;
 import com.justinwu.springbootmall.util.JwtUtil;
 import com.justinwu.springbootmall.util.Page;
@@ -20,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -85,5 +86,29 @@ public class OrderController {
         Order order = orderService.getOrderById(orderId);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(order);
+    }
+
+    @PassToken
+    @PostMapping("/ecpayCheckout/{orderId}")
+    public String ecpayCheckout(@PathVariable Integer orderId) {
+        String aioCheckOutALLForm = orderService.ecpayCheckout(orderId);
+
+        return aioCheckOutALLForm;
+    }
+
+    @PassToken
+    @PostMapping("/ecpayResult")
+    public String ecpayResult(//查詢條件 Filtering
+                              @RequestParam String MerchantID,
+                              @RequestParam String MerchantTradeNo,
+                              @RequestParam String CheckMacValue) {
+        ECPayQueryParams ecPayQueryParams = new ECPayQueryParams();
+        ecPayQueryParams.setMerchantID(MerchantID);
+        ecPayQueryParams.setMerchantTradeNo(MerchantTradeNo);
+        ecPayQueryParams.setCheckMacValue(CheckMacValue);
+
+        Integer orderId = orderService.getEcpayTradeByTradeNo(MerchantTradeNo).getOrderId();
+        orderService.updateOrderState(orderId, OrderState.COMPLETED);
+        return "1|OK";
     }
 }

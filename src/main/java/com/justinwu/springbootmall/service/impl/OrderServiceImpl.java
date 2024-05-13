@@ -1,14 +1,18 @@
 package com.justinwu.springbootmall.service.impl;
 
+import com.justinwu.springbootmall.constant.OrderState;
 import com.justinwu.springbootmall.dao.CartDao;
 import com.justinwu.springbootmall.dao.OrderDao;
 import com.justinwu.springbootmall.dao.ProductDao;
 import com.justinwu.springbootmall.dao.UserDao;
 import com.justinwu.springbootmall.dto.BuyItem;
 import com.justinwu.springbootmall.dto.CreateOrderRequest;
+import com.justinwu.springbootmall.dto.ECPayTrade;
 import com.justinwu.springbootmall.dto.OrderQueryParams;
 import com.justinwu.springbootmall.model.*;
 import com.justinwu.springbootmall.service.OrderService;
+import ecpay.payment.integration.AllInOne;
+import ecpay.payment.integration.domain.AioCheckOutALL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +21,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class OrderServiceImpl implements OrderService {
@@ -125,5 +132,45 @@ public class OrderServiceImpl implements OrderService {
         orderDao.createOrderItems(orderId, orderItemList);
 
         return  orderId;
+    }
+
+    @Override
+    public String ecpayCheckout(Integer orderId) {
+
+        String tradeNo = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 20);
+        orderDao.createEcpayTrade(orderId, tradeNo);
+
+        Order order = orderDao.getOrderById(orderId);
+        Integer totalAmount = order.getTotalAmount();
+
+        AllInOne all = new AllInOne("");
+
+        AioCheckOutALL obj = new AioCheckOutALL();
+        obj.setMerchantTradeNo(tradeNo);
+
+        Date now = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        String formattedDate = formatter.format(now);
+        obj.setMerchantTradeDate(formattedDate);
+
+        obj.setTotalAmount(String.valueOf(totalAmount));
+        obj.setTradeDesc("test Description");
+        obj.setItemName("TestItem");
+        obj.setReturnURL("https://justinwuproject.online/mall/api/ecpayResult");
+        obj.setNeedExtraPaidInfo("N");
+        obj.setClientBackURL("https://justinwuproject.online/mall/");
+        String form = all.aioCheckOut(obj, null);
+
+        return form;
+    }
+
+    @Override
+    public ECPayTrade getEcpayTradeByTradeNo(String tradeNo) {
+        return orderDao.getEcpayTradeByTradeNo(tradeNo);
+    }
+
+    @Override
+    public void updateOrderState(Integer orderId, OrderState orderState) {
+        orderDao.updateOrderState(orderId, orderState);
     }
 }

@@ -3,11 +3,13 @@ package com.justinwu.springbootmall.dao.impl;
 import com.justinwu.springbootmall.constant.OrderState;
 import com.justinwu.springbootmall.dao.OrderDao;
 import com.justinwu.springbootmall.dto.CreateOrderRequest;
+import com.justinwu.springbootmall.dto.ECPayTrade;
 import com.justinwu.springbootmall.dto.OrderQueryParams;
 import com.justinwu.springbootmall.dto.ProductQueryParams;
 import com.justinwu.springbootmall.model.Order;
 import com.justinwu.springbootmall.model.OrderItem;
 import com.justinwu.springbootmall.model.Product;
+import com.justinwu.springbootmall.rowmapper.ECPayTradeRowMapper;
 import com.justinwu.springbootmall.rowmapper.OrderItemRowMapper;
 import com.justinwu.springbootmall.rowmapper.OrderRowMapper;
 import com.justinwu.springbootmall.rowmapper.ProductRowMapper;
@@ -144,6 +146,47 @@ public class OrderDaoImpl implements OrderDao {
         }
 
         namedParameterJdbcTemplate.batchUpdate(sql, parameterSources);
+    }
+
+    @Override
+    public void createEcpayTrade(Integer orderId, String tradeNo) {
+        String sql = "INSERT INTO ecpay_trade(order_id, trade_no) " +
+                "VALUES (:orderId, :tradeNo)";
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("orderId", orderId);
+        map.put("tradeNo", tradeNo);
+
+        namedParameterJdbcTemplate.update(sql, map);
+    }
+
+    @Override
+    public ECPayTrade getEcpayTradeByTradeNo(String tradeNo) {
+        String sql = "SELECT trade_no, order_id " +
+                " FROM ecpay_trade WHERE trade_no = :tradeNo";
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("tradeNo", tradeNo);
+
+        List<ECPayTrade> tradeList = namedParameterJdbcTemplate.query(sql, map, new ECPayTradeRowMapper());
+        if(tradeList.size()>0) {
+            return tradeList.get(0);
+        }
+        else{
+            return null;
+        }
+    }
+
+    @Override
+    public void updateOrderState(Integer orderId, OrderState orderState) {
+        String sql = "UPDATE `order` SET state = :orderState " +
+                "WHERE order_id = :orderId";
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("orderId", orderId);
+        map.put("orderState", orderState.toString());
+
+        namedParameterJdbcTemplate.update(sql, map);
     }
 
     private String addFilteringSql(String sql, Map<String, Object> map, OrderQueryParams orderQueryParams){
